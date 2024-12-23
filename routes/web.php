@@ -1,19 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
-    return view('login.welcome');
+    return view('login.index', [
+        "title" => "PT Buana Express",
+        "active" => 'pt buana express'
+    ]);
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
 
-Route::get('/upload-data', function () {
-    return view('upload-data');
-});
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
-Route::get('/report-data', function () {
-    return view('report-data');
+Route::prefix('/report')->group(function () {
+    Route::get('/list', [ReportController::class, 'index'])->middleware('auth');
+    Route::get('/add', [ReportController::class, 'add'])->middleware('auth');
 });

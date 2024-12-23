@@ -14,7 +14,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="dashboard">
+        <a class="nav-link" href="/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -29,16 +29,9 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="report-data">
+        <a class="nav-link" href="/report/list">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Bill of Landing</span></a>
-        {{-- <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Menu Pilihan:</h6>
-                <a class="collapse-item" href="upload-data">Upload Data</a>
-                <a class="collapse-item" href="report-data">Data Laporan</a>
-            </div>
-        </div> --}}
     </li>
 </ul>
 <!-- End of Sidebar -->
