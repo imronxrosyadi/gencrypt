@@ -29,7 +29,7 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="/report/list">
+        <a class="nav-link" href="/report">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Bill of Landing</span></a>
     </li>

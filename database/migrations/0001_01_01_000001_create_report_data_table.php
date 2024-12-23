@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('filename')->unique();
             $table->string('extension');
             $table->text('data');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

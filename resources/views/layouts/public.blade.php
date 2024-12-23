@@ -37,10 +37,10 @@
     </div>
 
     <!-- Footer -->
-    <footer class="sticky-footer bg-dark fixed-bottom shadow">
+    <footer class="sticky-footer bg-light fixed-bottom shadow">
         <div class="container my-auto">
-            <div class="copyright text-center text-white my-auto">
-                <span>&copy; PT Buana Express 2023. All rights reserved.</span>
+            <div class="copyright text-center text-dark my-auto">
+                <span>&copy; PT Buana Express 2024. All rights reserved.</span>
             </div>
         </div>
     </footer>

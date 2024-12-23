@@ -3,15 +3,29 @@
 @section('container')
     <!-- Begin Page Content -->
     <div class="container-fluid">
+
+        @if (session()->has('success') && session()->get('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session()->has('err') && session()->get('err'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('err') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="col-lg-12">
             <div class="row mb-3">
                 <h1 class="col-lg-6 text-gray-800">List Data Laporan</h1>
                 <div class="col-lg-6 text-right">
-                    <a href="/report/add" class="btn btn-primary btn-icon">
+                    <a href="/report/create" class="btn btn-primary btn-icon">
                         <span class="icon text-white-50">
                             <i class="fas fa-plus"></i>
                         </span>
-                        <span class="text">Tambah Data Kriteria</span>
+                        <span class="text">Tambah Data Report</span>
                     </a>
                 </div>
             </div>
@@ -33,28 +47,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td><a href="">BOFL232771882367889.pdf</a></td>
-                                <td>23 Januari 2024</td>
-                                <td>
-                                    <a class="btn btn-danger btn-circle" data-toggle="modal" data-bs-target="#smallButton"
-                                        data-attr="*" data-target="#smallModal" id="smallButton">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><a href="">BOFL232771842341233.pdf</a></td>
-                                <td>23 Mei 2024</td>
-                                <td>
-                                    <a class="btn btn-danger btn-circle" data-toggle="modal" data-bs-target="#smallButton"
-                                        data-attr="*" data-target="#smallModal" id="smallButton">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                            @foreach ($reports as $index => $report)
+                                <tr>
+                                    <th scope="row">{{ $index + 1 }}</th>
+                                    <td>{{ $report->filename }}</td>
+                                    <td>{{ $report->created_at }}</td>
+                                    <td>
+                                        <a class="btn btn-danger btn-circle" data-toggle="modal"
+                                            data-bs-target="#smallButton" data-attr="/report/delete/{{ $report->id }}"
+                                            data-target="#smallModal" id="smallButton">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -63,4 +69,62 @@
         <!-- Page Heading -->
     </div>
     <!-- /.container-fluid -->
+    <!-- small modal -->
+    <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="smallBody">
+                    <div>
+                        <!-- the result to be displayed apply here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('javascript_content')
+    <script>
+        // display a modal (small modal)
+        $(document).on('click', '#smallButton', function(event) {
+            event.preventDefault();
+            let href = $(this).attr('data-attr');
+            console.log('ini bro', href);
+            $.ajax({
+                url: href,
+                beforeSend: function() {
+                    // $('#loader').show();
+                },
+                // return the result
+                success: function(result) {
+                    $('#smallModal').modal("show");
+                    $('#smallBody').html(result).show();
+                },
+                complete: function() {
+                    // $('#loader').hide();
+                },
+                error: function(jqXHR, testStatus, error) {
+                    console.log(error);
+                    alert("Page " + href + " cannot open. Error:" + error);
+                    // $('#loader').hide();
+                },
+                timeout: 8000
+            })
+        });
+    </script>
+
+    <script>
+        // display a modal (small modal)
+        $(document).on('click', '#cancelButton', function(event) {
+            event.preventDefault();
+            $('#smallModal').modal("hide");
+            $('#smallBody').html(result).hide();
+        });
+    </script>
 @endsection

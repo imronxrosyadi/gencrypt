@@ -17,7 +17,12 @@ Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
-Route::prefix('/report')->group(function () {
-    Route::get('/list', [ReportController::class, 'index'])->middleware('auth');
-    Route::get('/add', [ReportController::class, 'add'])->middleware('auth');
-});
+
+Route::resource('/report', ReportController::class);
+Route::get('/report/delete/{id}', [ReportController::class, 'delete']);
+
+// Route::prefix('/report')->group(function () {
+//     Route::get('/list', [ReportController::class, 'index'])->middleware('auth');
+//     Route::get('/add', [ReportController::class, 'create'])->middleware('auth');
+//     Route::post('/store', [ReportController::class, 'store']);
+// });
