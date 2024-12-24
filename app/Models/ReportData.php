@@ -22,6 +22,7 @@ class ReportData extends Model
     protected $fillable = [
         'filename',
         'extension',
-        'data'
+        'data',
+        'data_binary'
     ];
 }
