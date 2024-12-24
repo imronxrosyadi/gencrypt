@@ -22,7 +22,9 @@ class ReportData extends Model
     protected $fillable = [
         'filename',
         'extension',
-        'data',
-        'data_binary'
+        'key',
+        'path',
+        'encryption_time',
+        'decryption_time'
     ];
 }

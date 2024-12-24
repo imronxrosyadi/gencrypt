@@ -15,8 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('filename')->unique();
             $table->string('extension');
-            $table->text('data');
-            $table->binary('data_binary');
+            // $table->text('data');
+            // $table->binary('data_binary');
+            $table->string('key');
+            $table->string('path');
+            $table->timestamp('encryption_time')->nullable();
+            $table->timestamp('decryption_time')->nullable();
             $table->timestamps();
         });
     }

@@ -21,7 +21,7 @@
             <div class="row mb-3">
                 <h1 class="col-lg-6 text-gray-800">List Data Laporan</h1>
                 <div class="col-lg-6 text-right">
-                    <a href="/report/create" class="btn btn-primary btn-icon">
+                    <a href="/report/encryption/create" class="btn btn-primary btn-icon">
                         <span class="icon text-white-50">
                             <i class="fas fa-plus"></i>
                         </span>
@@ -42,6 +42,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>File Name</th>
+                                <th>Waktu Enkripsi</th>
                                 <th>Uploaded Date</th>
                                 <th>Aksi</th>
                             </tr>
@@ -50,11 +51,16 @@
                             @foreach ($reports as $index => $report)
                                 <tr>
                                     <th scope="row">{{ $index + 1 }}</th>
-                                    <td>{{ $report->filename }}</td>
+                                    <td>
+                                        <a href="{{ route('download.file', $report->filename) }}">
+                                            {{ $report->filename }}
+                                        </a>
+                                    </td>
+                                    <th>{{ $report->encryption_time }}</th>
                                     <td>{{ $report->created_at }}</td>
                                     <td>
                                         <a class="btn btn-danger btn-circle" data-toggle="modal"
-                                            data-bs-target="#smallButton" data-attr="/report/delete/{{ $report->id }}"
+                                            data-bs-target="#smallButton" data-attr="/encryption/delete/{{ $report->id }}"
                                             data-target="#smallModal" id="smallButton">
                                             <i class="fas fa-trash"></i>
                                         </a>

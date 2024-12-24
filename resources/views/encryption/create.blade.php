@@ -9,16 +9,18 @@
                 </div>
                 <div class="card-body">
                     <main class="form-master">
-                        <form action="/report" method="post" enctype="multipart/form-data">
+                        <form action="/report/encryption" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form">
                                 <label for="file" class="form-label">Upload File Report</label>
-                                <input class="form-control" type="file" id="file" name="file" required>
-                                {{-- <input class="form-control" type="text" id="filename" name="filename"
-                                    value="{{ old('filename') }}" hidden> --}}
+                                <input class="form-control" type="file" id="file" name="file"
+                                    value="{{ old('file') }}" required>
+                                <label for="file" class="form-label mt-3">Kata Sandi</label>
+                                <input class="form-control" type="text" id="key" name="key"
+                                    value="{{ old('key') }}" required>
                             </div>
                             <div class="col text-right">
-                                <a href="/report" class="w-30 btn btn-md btn-danger mt-3">Batal</a>
+                                <a href="/report/encryption" class="w-30 btn btn-md btn-danger mt-3">Batal</a>
                                 <button class="w-30 btn btn-md btn-primary mt-3" type="submit">Simpan</button>
                             </div>
                         </form>
