@@ -54,6 +54,9 @@ class DecryptionController extends Controller
         $this->decyptBinary($filePath,$file_output_path,$key);
         round(microtime(as_float: true) - $timer, 3);
 
+        $report_data::update([
+            'decryption_time' => round(microtime(as_float: true) - $timer, 3),
+        ]);
         if (file_exists($file_output_path)) {
             return Storage::download($file_output_path, $filename, []);
         } else {
