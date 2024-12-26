@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('report_data', function (Blueprint $table) {
             $table->id();
-            $table->string('filename')->unique();
+            $table->string('filename');
+            $table->string('filename_encrypt')->unique();
             $table->string('extension');
+            $table->float('original_size');
+            $table->float('encrypt_size');
             // $table->text('data');
             // $table->binary('data_binary');
             $table->string('key');

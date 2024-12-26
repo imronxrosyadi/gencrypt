@@ -18,7 +18,6 @@ class EncryptionController extends Controller
             "reports" => ReportData::latest()->paginate(100)->withQueryString()
         ]);
     }
-
     public function show() {}
 
     public function create()
@@ -34,43 +33,56 @@ class EncryptionController extends Controller
         $request->validate([
             'file' => 'required|file|mimes:jpg,jpeg,png,pdf|max:10000'
         ]);
-
-
-        // $key = empty(env('FILE_ENCRYPTION_KEY')) ? env('FILE_ENCRYPTION_KEY') : '1234567890abcdef';
         $key = $request->key;
-        $timer = microtime(true);
         $file = $request->file('file');
         $fileName = $file->getClientOriginalName();
+        $fileName_without_ex = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $extension = $file->getClientOriginalExtension();
-        $path = $file->store('uploads', 'local');
+        $original_size = $file->getSize();
+       
+        $basepath = empty(env('APP_ENCRYPTED_BASE_PATH')) ? '/file_encrypt': env('APP_ENCRYPTED_BASE_PATH');
+        $filename_encrypt = $this->enrichfileName($fileName_without_ex);
+        $file_output_path = $basepath.'/'.$filename_encrypt;
 
-
-        //encrypt file slow even more slow if using base64 because converting into base64 increasing size
-        //ok bg
+        ini_set('max_execution_time', -1);
+        ini_set('memory_limit', -1);
+        
+        // $this->createBaseFolder($basepath);
+        $timer = microtime(true);
+        $this->encryptBinary($file,$key,$file_output_path);
         ReportData::create([
-            // 'data_binary' => $this->encryptBinary($file,$key),
-            // 'data' =>  $this->encryptBase64($file, $key),
             'filename' => $fileName,
+            'filename_encrypt' => $filename_encrypt,
             'extension' => $extension,
             'key' => $key,
-            'path' => $path,
-            // 'encryption_time' => $timer,
+            'path' => $file_output_path,
+            'original_size' => $original_size,
+            'encrypt_size'=> filesize($file_output_path),
+            'encryption_time' => round(microtime(as_float: true) - $timer, 3),
         ]);
-        // echo round(microtime(as_float: true) - $timer, 3);
         return back()->with('success!');
     }
 
-    public function encryptBase64(UploadedFile $file, string $key)
-    {
-        $base64Content = base64_encode(file_get_contents($file->getRealPath()));
-        return Aesctr::encrypt($base64Content, $key, 256);
+    public function enrichfileName($filename): string {
+        $filename      = strtolower(rand(1000,max: 100000)."-".$filename);
+        $finalFileName = str_replace(' ','-',$filename);
+        $filename_encrypt = $finalFileName.'.'.'rda';
+        return $filename_encrypt;
     }
 
-    public function encryptBinary(UploadedFile $file, string $key)
+    public function createBaseFolder($basepath): void {
+        if (!is_dir($basepath)) {
+            if (!mkdir($basepath, 0777, true)) {
+                die("failed to create folder: $basepath");
+            }
+            echo "Folder created: $basepath<br>";
+        }
+    }
+    public function encryptBinary(UploadedFile $file, string $key,string $fileOutputPath):void 
     {
         $chunkSize = 1024 * 64; // 64KB per chunk
         $binaryContent = fopen($file->getRealPath(), 'rb');
-        $encryptedContent = '';
+        $file_output = fopen($fileOutputPath, 'wb');
         try {
             while (!feof($binaryContent)) {
                 $chunk = fread($binaryContent, $chunkSize);
@@ -78,28 +90,33 @@ class EncryptionController extends Controller
                     throw new \RuntimeException('Error reading the file.');
                 }
 
-                // Encrypt the chunk
                 $encryptedChunk = Aesctr::encrypt($chunk, $key, 256);
-
-                // Append the encrypted chunk
-                $encryptedContent .= $encryptedChunk;
+                fwrite($file_output, $encryptedChunk);
             }
         } finally {
             fclose($binaryContent);
+            fclose($file_output);
         }
-
-        return Aesctr::encrypt($encryptedContent, $key, 256);
     }
-
-
-    public function decryptBase64($encryptedData, string $key)
+    public function decyptBinary($filePath,$fileOutputPath, string $key)
     {
-        return Aesctr::decrypt($encryptedData, $key, 256);
-    }
+        $chunkSize = 1024 * 64; // 64KB per chunk
+        $binaryContent = fopen($filePath, 'rb');
+        $file_output = fopen($fileOutputPath, 'wb');
+        try {
+            while (!feof($binaryContent)) {
+                $chunk = fread($binaryContent, $chunkSize);
+                if ($chunk === false) {
+                    throw new \RuntimeException('Error reading the file.');
+                }
 
-    public function decyptBinary($encryptedData, string $key)
-    {
-        return Aesctr::decrypt($encryptedData, $key, 256);
+                $encryptedChunk = Aesctr::decrypt($chunk, $key, 256);
+                fwrite($file_output, $encryptedChunk);
+            }
+        } finally {
+            fclose($binaryContent);
+            fclose($file_output);
+        }
     }
 
     public function download($file)
