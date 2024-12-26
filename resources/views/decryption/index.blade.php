@@ -19,13 +19,13 @@
         @endif
         <div class="col-lg-12">
             <div class="row mb-3">
-                <h1 class="col-lg-6 text-gray-800">List Data Laporan</h1>
+                <h1 class="col-lg-6 text-gray-800">Bill of Landing</h1>
                 <div class="col-lg-6 text-right">
                     <a href="/report/decryption/create" class="btn btn-primary btn-icon">
                         <span class="icon text-white-50">
                             <i class="fas fa-plus"></i>
                         </span>
-                        <span class="text">Tambah Data Report</span>
+                        <span class="text">Dekripsi Data Laporan</span>
                     </a>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>File Name</th>
-                                <th>Waktu Enkripsi</th>
+                                <th>Waktu Dekripsi</th>
                                 <th>Uploaded Date</th>
                                 <th>Aksi</th>
                             </tr>
@@ -56,7 +56,7 @@
                                             {{ $report->filename }}
                                         </a>
                                     </td>
-                                    <th>{{ $report->encryption_time }}</th>
+                                    <th>{{ $report->decryption_time }}</th>
                                     <td>{{ $report->created_at }}</td>
                                     <td>
                                         <a class="btn btn-danger btn-circle" data-toggle="modal"

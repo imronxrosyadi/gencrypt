@@ -19,9 +19,7 @@ class DecryptionController extends Controller
             "reports" => ReportData::whereNotNull('decryption_time')->latest()->paginate(100)->withQueryString()
         ]);
     }
-    public function show()
-    {
-    }
+    public function show() {}
 
     public function create()
     {
@@ -53,9 +51,9 @@ class DecryptionController extends Controller
         $key = $request->key;
         $file_output_path = env('APP_DECRYPTED_BASE_PATH') . '/' . $filename;
         $timer = microtime(true);
-        $this->decryptBinary($file, $key,$file_output_path);
+        $this->decryptBinary($file, $key, $file_output_path);
         ReportData::where("id", $id)->update([
-            "decryption_time" => round(microtime(as_float: true) - $timer, 3),
+            "decryption_time" => strval(round(microtime(as_float: true) - $timer, 3)),
             "path_decrypt" => $file_output_path
         ]);
 
@@ -133,5 +131,4 @@ class DecryptionController extends Controller
             fclose($file_output);
         }
     }
-
 }

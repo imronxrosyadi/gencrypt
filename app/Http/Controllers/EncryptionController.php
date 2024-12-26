@@ -18,9 +18,7 @@ class EncryptionController extends Controller
             "reports" => ReportData::latest()->paginate(100)->withQueryString()
         ]);
     }
-    public function show()
-    {
-    }
+    public function show() {}
 
     public function create()
     {
@@ -44,7 +42,9 @@ class EncryptionController extends Controller
 
         $basepath = empty(env('APP_ENCRYPTED_BASE_PATH')) ? '/file_encrypt' : env('APP_ENCRYPTED_BASE_PATH');
         $filename_encrypt = $this->enrichfileName($fileName_without_ex);
+        // $file_output_path = $file->store('uploads', 'local');
         $file_output_path = $basepath . '/' . $filename_encrypt;
+        // dd($file_output_path);
 
         ini_set('max_execution_time', -1);
         ini_set('memory_limit', -1);
@@ -60,7 +60,7 @@ class EncryptionController extends Controller
             'path_encrypt' => $file_output_path,
             'original_size' => $original_size,
             'encrypt_size' => filesize($file_output_path),
-            'encryption_time' => round(microtime(as_float: true) - $timer, 3),
+            'encryption_time' => strval(round(microtime(as_float: true) - $timer, 3)),
         ]);
         return back()->with('success!');
     }

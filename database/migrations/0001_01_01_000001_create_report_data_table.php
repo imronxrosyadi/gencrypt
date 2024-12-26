@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('key');
             $table->string('path_encrypt')->nullable();
             $table->string('path_decrypt')->nullable();
-            $table->timestamp('encryption_time')->nullable();
-            $table->timestamp('decryption_time')->nullable();
+            $table->string('encryption_time')->nullable();
+            $table->string('decryption_time')->nullable();
             $table->timestamps();
         });
     }

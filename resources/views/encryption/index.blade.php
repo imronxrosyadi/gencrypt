@@ -19,13 +19,13 @@
         @endif
         <div class="col-lg-12">
             <div class="row mb-3">
-                <h1 class="col-lg-6 text-gray-800">List Data Laporan</h1>
+                <h1 class="col-lg-6 text-gray-800">Bill of Landing</h1>
                 <div class="col-lg-6 text-right">
                     <a href="/report/encryption/create" class="btn btn-primary btn-icon">
                         <span class="icon text-white-50">
                             <i class="fas fa-plus"></i>
                         </span>
-                        <span class="text">Tambah Data Report</span>
+                        <span class="text">Enkripsi Data Laporan</span>
                     </a>
                 </div>
             </div>
@@ -33,7 +33,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Bill of Landing</h6>
+                <h6 class="m-0 font-weight-bold text-primary">List Data Terenkripsi</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -42,7 +42,8 @@
                             <tr>
                                 <th>No</th>
                                 <th>File Name</th>
-                                <th>File Name Encrypt</th>
+                                <th>Ukuran Data Laporan</th>
+                                <th>Ukuran Data Laporan Terenkripsi</th>
                                 <th>Waktu Enkripsi</th>
                                 <th>Uploaded Date</th>
                                 <th>Aksi</th>
@@ -54,11 +55,12 @@
                                     <th scope="row">{{ $index + 1 }}</th>
                                     <td>
                                         <a href="{{ route('download.file', $report->id) }}">
-                                            {{ $report->filename }}
+                                            {{ explode('.', $report->filename)[0] }}
                                         </a>
                                     </td>
-                                    <th>{{ $report->filename_encrypt }}</th>
-                                    <th>{{ $report->encryption_time }}</th>
+                                    <th>{{ $report->original_size }}</th>
+                                    <th>{{ $report->encrypt_size }}</th>
+                                    <th>{{ $report->encryption_time }} Detik</th>
                                     <td>{{ $report->created_at }}</td>
                                     <td>
                                         <a class="btn btn-danger btn-circle" data-toggle="modal"
