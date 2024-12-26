@@ -30,8 +30,6 @@ class DecryptionController extends Controller
 
     public function download(Request $request)
     {
-
-        dd('sempak');
         $request->validate([
             'key' => 'required',
             'id'=> 'required',
