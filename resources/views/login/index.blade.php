@@ -24,13 +24,15 @@
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image">
-                            <h1>Gencrypt images</h1>
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image text-center">
+                            <img class="mt-5" src="{{ asset('img/home.png') }}" alt="buana-express"
+                                style="width: 500px; height: auto">
                         </div>
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">Selamat Datang di Sistem Pengamanan Data Laporan PT
+                                        Buana Express</h1>
                                 </div>
                                 <form action="/login" method="post" class="user">
                                     @csrf
