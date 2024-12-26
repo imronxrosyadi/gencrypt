@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DecryptionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
@@ -21,4 +22,9 @@ Route::prefix('/report')->group(function () {
     Route::resource('/encryption', EncryptionController::class);
     Route::get('/encryption/download/{file}', [EncryptionController::class, 'download'])->name('download.file');
     Route::get('/encryption/delete/{id}', [EncryptionController::class, 'delete']);
+
+    
+    Route::resource('/decryption', DecryptionController::class);
+    Route::get('/decryption/download/{file}', [DecryptionController::class, 'download'])->name('download.decrypt.file');
+    Route::get('/decryption/delete/{id}', [DecryptionController::class, 'delete']);
 });

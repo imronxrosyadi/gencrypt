@@ -21,7 +21,8 @@ return new class extends Migration
             // $table->text('data');
             // $table->binary('data_binary');
             $table->string('key');
-            $table->string('path');
+            $table->string('path_encrypt')->nullable();
+            $table->string('path_decrypt')->nullable();
             $table->timestamp('encryption_time')->nullable();
             $table->timestamp('decryption_time')->nullable();
             $table->timestamps();

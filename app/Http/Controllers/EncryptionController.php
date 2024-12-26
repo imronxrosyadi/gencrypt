@@ -18,7 +18,9 @@ class EncryptionController extends Controller
             "reports" => ReportData::latest()->paginate(100)->withQueryString()
         ]);
     }
-    public function show() {}
+    public function show()
+    {
+    }
 
     public function create()
     {
@@ -39,38 +41,40 @@ class EncryptionController extends Controller
         $fileName_without_ex = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $extension = $file->getClientOriginalExtension();
         $original_size = $file->getSize();
-       
-        $basepath = empty(env('APP_ENCRYPTED_BASE_PATH')) ? '/file_encrypt': env('APP_ENCRYPTED_BASE_PATH');
+
+        $basepath = empty(env('APP_ENCRYPTED_BASE_PATH')) ? '/file_encrypt' : env('APP_ENCRYPTED_BASE_PATH');
         $filename_encrypt = $this->enrichfileName($fileName_without_ex);
-        $file_output_path = $basepath.'/'.$filename_encrypt;
+        $file_output_path = $basepath . '/' . $filename_encrypt;
 
         ini_set('max_execution_time', -1);
         ini_set('memory_limit', -1);
-        
+
         // $this->createBaseFolder($basepath);
         $timer = microtime(true);
-        $this->encryptBinary($file,$key,$file_output_path);
+        $this->encryptBinary($file, $key, $file_output_path);
         ReportData::create([
             'filename' => $fileName,
             'filename_encrypt' => $filename_encrypt,
             'extension' => $extension,
             'key' => $key,
-            'path' => $file_output_path,
+            'path_encrypt' => $file_output_path,
             'original_size' => $original_size,
-            'encrypt_size'=> filesize($file_output_path),
+            'encrypt_size' => filesize($file_output_path),
             'encryption_time' => round(microtime(as_float: true) - $timer, 3),
         ]);
         return back()->with('success!');
     }
 
-    public function enrichfileName($filename): string {
-        $filename      = strtolower(rand(1000,max: 100000)."-".$filename);
-        $finalFileName = str_replace(' ','-',$filename);
-        $filename_encrypt = $finalFileName.'.'.'rda';
+    public function enrichfileName($filename): string
+    {
+        $filename = strtolower(rand(1000, max: 100000) . "-" . $filename);
+        $finalFileName = str_replace(' ', '-', $filename);
+        $filename_encrypt = $finalFileName . '.' . 'rda';
         return $filename_encrypt;
     }
 
-    public function createBaseFolder($basepath): void {
+    public function createBaseFolder($basepath): void
+    {
         if (!is_dir($basepath)) {
             if (!mkdir($basepath, 0777, true)) {
                 die("failed to create folder: $basepath");
@@ -78,7 +82,7 @@ class EncryptionController extends Controller
             echo "Folder created: $basepath<br>";
         }
     }
-    public function encryptBinary(UploadedFile $file, string $key,string $fileOutputPath):void 
+    public function encryptBinary(UploadedFile $file, string $key, string $fileOutputPath): void
     {
         $chunkSize = 1024 * 64; // 64KB per chunk
         $binaryContent = fopen($file->getRealPath(), 'rb');
@@ -98,7 +102,7 @@ class EncryptionController extends Controller
             fclose($file_output);
         }
     }
-    public function decyptBinary($filePath,$fileOutputPath, string $key)
+    public function decyptBinary($filePath, $fileOutputPath, string $key)
     {
         $chunkSize = 1024 * 64; // 64KB per chunk
         $binaryContent = fopen($filePath, 'rb');
@@ -119,13 +123,23 @@ class EncryptionController extends Controller
         }
     }
 
-    public function download($file)
+    public function download($id)
     {
-        $reportData = ReportData::where('filename', $file)->first();
-        if (!Storage::disk('local')->exists($reportData->path)) {
-            return abort(404, 'file not found.');
+        $report_data = ReportData::where('id', $id)->first();
+
+        $file_output_path = $report_data->path_encrypt;
+        if (file_exists($file_output_path)) {
+            $fileName = basename($file_output_path);
+            $mimeType = mime_content_type($file_output_path);
+
+            header('Content-Type: ' . $mimeType);
+            header('Content-Disposition: attachment; filename="' . $fileName . '"');
+            header('Content-Length: ' . filesize($file_output_path));
+            readfile($file_output_path);
+            exit;
+        } else {
+            return response()->json(['error' => 'File not found'], 404);
         }
-        return Storage::download($reportData->path, $reportData->filename, []);
     }
 
     public function delete($code)
