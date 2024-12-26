@@ -64,7 +64,8 @@
                                     <td>{{ $report->created_at }}</td>
                                     <td>
                                         <a class="btn btn-danger btn-circle" data-toggle="modal"
-                                            data-bs-target="#smallButton" data-attr="/encryption/delete/{{ $report->id }}"
+                                            data-bs-target="#smallButton"
+                                            data-attr="/report/encryption/delete/{{ $report->id }}"
                                             data-target="#smallModal" id="smallButton">
                                             <i class="fas fa-trash"></i>
                                         </a>

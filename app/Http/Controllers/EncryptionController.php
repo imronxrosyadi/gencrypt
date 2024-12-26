@@ -14,7 +14,7 @@ class EncryptionController extends Controller
     {
         return view('encryption.index', [
             'title' => 'PT Buana Express',
-            'active' => 'report',
+            'active' => 'encryption',
             "reports" => ReportData::latest()->paginate(100)->withQueryString()
         ]);
     }
@@ -24,7 +24,7 @@ class EncryptionController extends Controller
     {
         return view('encryption.create', [
             'title' => 'PT Buana Express',
-            'active' => 'report'
+            'active' => 'encryption'
         ]);
     }
 
