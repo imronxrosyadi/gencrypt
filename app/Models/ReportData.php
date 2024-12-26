@@ -21,9 +21,13 @@ class ReportData extends Model
      */
     protected $fillable = [
         'filename',
+        'filename_encrypt',
         'extension',
+        'original_size',
+        'encrypt_size',
         'key',
-        'path',
+        'path_encrypt',
+        'path_decrypt',
         'encryption_time',
         'decryption_time'
     ];
