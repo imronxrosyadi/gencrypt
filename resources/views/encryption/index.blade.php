@@ -59,7 +59,7 @@
                                         </a>
                                     </td>
                                     <th>{{ $report->original_size }}</th>
-                                    <th>{{ $report->encrypt_size }}</th>
+                                    <th>{{ $report->encrypt_size}}</th>
                                     <th>{{ $report->encryption_time }} Detik</th>
                                     <td>{{ $report->created_at }}</td>
                                     <td>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CommonHelper;
 use App\Models\ReportData;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -13,11 +14,25 @@ class DecryptionController extends Controller
 {
     public function index()
     {
+
+
+        $reports = ReportData::whereNotNull('decryption_time')
+        ->latest()
+        ->paginate(100)
+        ->withQueryString();
+
+        $reports->getCollection()->transform(function ($report) {
+            $report->original_size = CommonHelper::formatSize($report->original_size);
+            $report->encrypt_size = CommonHelper::formatSize($report->encrypt_size);
+            return $report;
+        });
+        
         return view('decryption.index', [
             'title' => 'PT Buana Express',
             'active' => 'report',
-            "reports" => ReportData::whereNotNull('decryption_time')->latest()->paginate(100)->withQueryString()
+            "reports" => $reports
         ]);
+        
     }
     public function show() {}
 
@@ -56,8 +71,9 @@ class DecryptionController extends Controller
             "decryption_time" => strval(round(microtime(as_float: true) - $timer, 3)),
             "path_decrypt" => $file_output_path
         ]);
-
-        return back()->with('success!');
+        
+        return redirect('/report/decryption')
+            ->with('success', 'Decrypt File success!');
     }
 
     public function download($id)

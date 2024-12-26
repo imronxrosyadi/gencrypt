@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CommonHelper;
 use App\Helpers\Helper1\Aesctr;
 use App\Models\ReportData;
 use Illuminate\Http\Request;
@@ -12,13 +13,27 @@ class EncryptionController extends Controller
 {
     public function index()
     {
+
+        $reports = ReportData::latest()
+            ->paginate(100)
+            ->withQueryString();
+
+        $reports->getCollection()->transform(function ($report) {
+            $report->original_size = CommonHelper::formatSize($report->original_size);
+            $report->encrypt_size = CommonHelper::formatSize($report->encrypt_size);
+            return $report;
+        });
+
         return view('encryption.index', [
             'title' => 'PT Buana Express',
             'active' => 'report',
-            "reports" => ReportData::latest()->paginate(100)->withQueryString()
+            "reports" => $reports
         ]);
     }
-    public function show() {}
+
+    public function show()
+    {
+    }
 
     public function create()
     {
@@ -62,7 +77,9 @@ class EncryptionController extends Controller
             'encrypt_size' => filesize($file_output_path),
             'encryption_time' => strval(round(microtime(as_float: true) - $timer, 3)),
         ]);
-        return back()->with('success!');
+
+        return redirect('/report/encryption')
+            ->with('success', 'Encrypt File success!');
     }
 
     public function enrichfileName($filename): string
