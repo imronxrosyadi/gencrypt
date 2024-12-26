@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CommonHelper;
 use App\Models\ReportData;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -13,11 +14,25 @@ class DecryptionController extends Controller
 {
     public function index()
     {
+
+
+        $reports = ReportData::whereNotNull('decryption_time')
+        ->latest()
+        ->paginate(100)
+        ->withQueryString();
+
+        $reports->getCollection()->transform(function ($report) {
+            $report->original_size = CommonHelper::formatSize($report->original_size);
+            $report->encrypt_size = CommonHelper::formatSize($report->encrypt_size);
+            return $report;
+        });
+        
         return view('decryption.index', [
             'title' => 'PT Buana Express',
             'active' => 'report',
-            "reports" => ReportData::whereNotNull('decryption_time')->latest()->paginate(100)->withQueryString()
+            "reports" => $reports
         ]);
+        
     }
     public function show() {}
 
@@ -42,6 +57,10 @@ class DecryptionController extends Controller
 
         $report_data = ReportData::where('filename_encrypt', $fileName)->first();
 
+        if($report_data->key!=$key){
+            return back()->with('err', 'Wrong key for decrypt');
+        }
+
         ini_set('max_execution_time', -1);
         ini_set('memory_limit', -1);
 
@@ -57,7 +76,33 @@ class DecryptionController extends Controller
             "path_decrypt" => $file_output_path
         ]);
 
-        return back()->with('success!');
+        return redirect('/report/decryption')
+            ->with('success', 'Decrypt File success!');
+    }
+
+    public function delete($code)
+    {
+        $reportData = ReportData::where('id', $code)->firstorfail();
+        return view('decryption.delete', ["reportData" => $reportData]);
+    }
+
+    public function destroy($code)
+    {
+        $reportData = ReportData::where('id', $code)->firstorfail()->delete();
+
+        $page = 'decryption.index';
+        $success = '';
+        $err = '';
+        if ($reportData) {
+            $success = 'Report Data deleted successfully';
+        } else {
+            $err = 'Report Data deleted failure';
+        }
+
+        return redirect()
+            ->route($page)
+            ->with('success', $success)
+            ->with('err', $err);
     }
 
     public function download($id)

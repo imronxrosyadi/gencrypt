@@ -2,6 +2,13 @@
 
 @section('container')
     <div class="row justify-content-center">
+        @if (session()->has('err') && session()->get('err'))
+            <div id="err_container" class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('err') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="col-lg-6 mb-5">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -29,4 +36,11 @@
             </div>
         </div>
     </div>
+@endsection
+@section('javascript_content')
+    <script>
+        setTimeout(function() {
+            document.getElementById('err_container').style.display = 'none';
+        }, 3000);
+    </script>
 @endsection

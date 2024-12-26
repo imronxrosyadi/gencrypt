@@ -5,7 +5,7 @@
     <div class="container-fluid">
 
         @if (session()->has('success') && session()->get('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div id="success_container" class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -137,5 +137,9 @@
             $('#smallModal').modal("hide");
             $('#smallBody').html(result).hide();
         });
+
+        setTimeout(function() {
+            document.getElementById('success_container').style.display = 'none';
+        }, 3000);
     </script>
 @endsection

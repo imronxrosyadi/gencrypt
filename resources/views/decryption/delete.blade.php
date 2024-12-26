@@ -1,4 +1,4 @@
-<form action="{{ route('report.destroy', $reportData->id) }}" method="post">
+<form action="{{ route('decryption.destroy', $reportData->id) }}" method="post">
     <div class="modal-body">
         @csrf
         @method('DELETE')
