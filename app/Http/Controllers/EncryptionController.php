@@ -27,7 +27,7 @@ class EncryptionController extends Controller
         return view('encryption.index', [
             'title' => 'PT Buana Express',
             'active' => 'encryption',
-            "reports" => ReportData::latest()->paginate(100)->withQueryString()
+            "reports" => $reports
         ]);
     }
 
@@ -169,7 +169,7 @@ class EncryptionController extends Controller
     {
         $reportData = ReportData::where('id', $code)->firstorfail()->delete();
 
-        $page = 'report.index';
+        $page = 'encryption.index';
         $success = '';
         $err = '';
         if ($reportData) {
