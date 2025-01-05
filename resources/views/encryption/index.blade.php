@@ -19,7 +19,7 @@
         @endif
         <div class="col-lg-12">
             <div class="row mb-3">
-                <h1 class="col-lg-6 text-gray-800">Bill of Landing</h1>
+                <h1 class="col-lg-6 text-gray-800">Bill of Lading</h1>
                 <div class="col-lg-6 text-right">
                     <a href="/report/encryption/create" class="btn btn-primary btn-icon">
                         <span class="icon text-white-50">

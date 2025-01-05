@@ -19,7 +19,7 @@
         @endif
         <div class="col-lg-12">
             <div class="row mb-3">
-                <h1 class="col-lg-6 text-gray-800">Bill of Landing</h1>
+                <h1 class="col-lg-6 text-gray-800">Bill of Lading</h1>
                 <div class="col-lg-6 text-right">
                     <a href="/report/decryption/create" class="btn btn-primary btn-icon">
                         <span class="icon text-white-50">
@@ -33,7 +33,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Bill of Landing</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Bill of Lading</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
