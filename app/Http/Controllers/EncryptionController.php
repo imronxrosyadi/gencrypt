@@ -31,9 +31,7 @@ class EncryptionController extends Controller
         ]);
     }
 
-    public function show()
-    {
-    }
+    public function show() {}
 
     public function create()
     {
@@ -117,6 +115,7 @@ class EncryptionController extends Controller
         } finally {
             fclose($binaryContent);
             fclose($file_output);
+            ob_end_clean();
         }
     }
     public function decyptBinary($filePath, $fileOutputPath, string $key)

@@ -17,22 +17,21 @@ class DecryptionController extends Controller
 
 
         $reports = ReportData::whereNotNull('decryption_time')
-        ->latest()
-        ->paginate(100)
-        ->withQueryString();
+            ->latest()
+            ->paginate(100)
+            ->withQueryString();
 
         $reports->getCollection()->transform(function ($report) {
             $report->original_size = CommonHelper::formatSize($report->original_size);
             $report->encrypt_size = CommonHelper::formatSize($report->encrypt_size);
             return $report;
         });
-        
+
         return view('decryption.index', [
             'title' => 'PT Buana Express',
             'active' => 'report',
             "reports" => $reports
         ]);
-        
     }
     public function show() {}
 
@@ -57,7 +56,7 @@ class DecryptionController extends Controller
 
         $report_data = ReportData::where('filename_encrypt', $fileName)->first();
 
-        if($report_data->key!=$key){
+        if ($report_data->key != $key) {
             return back()->with('err', 'Wrong key for decrypt');
         }
 
@@ -116,6 +115,7 @@ class DecryptionController extends Controller
             header('Content-Disposition: attachment; filename="' . $fileName . '"');
             header('Content-Length: ' . filesize($file_output_path));
             readfile($file_output_path);
+            ob_end_clean();
             exit;
         } else {
             return response()->json(['error' => 'File not found'], 404);
@@ -174,6 +174,7 @@ class DecryptionController extends Controller
         } finally {
             fclose($binaryContent);
             fclose($file_output);
+            ob_end_clean();
         }
     }
 }
