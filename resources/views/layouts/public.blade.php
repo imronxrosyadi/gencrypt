@@ -25,7 +25,7 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
+    {{-- <link rel="icon" href="{{ asset('favicon.ico') }}"> --}}
 
     <title>Login</title>
 </head>

@@ -23,8 +23,17 @@
                                 <input class="form-control" type="file" id="file" name="file"
                                     value="{{ old('file') }}" required>
                                 <label for="file" class="form-label mt-3">Kata Sandi</label>
-                                <input class="form-control" type="text" id="key" name="key"
-                                    value="{{ old('key') }}" required>
+                                <label for="file" class="form-label mt-3">Kata Sandi</label>
+                                <div class="input-group">
+                                    <input class="form-control" type="password" id="key" name="key"
+                                        value="{{ old('key') }}" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" onclick="password_show_hide();">
+                                            <i class="fas fa-eye" id="show_eye"></i>
+                                            <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col text-right">
                                 <a href="/report/decryption" class="w-30 btn btn-md btn-danger mt-3">Batal</a>
@@ -42,5 +51,23 @@
         setTimeout(function() {
             document.getElementById('err_container').style.display = 'none';
         }, 3000);
+    </script>
+
+    <script>
+        function password_show_hide() {
+            var x = document.getElementById("key");
+            var show_eye = document.getElementById("show_eye");
+            var hide_eye = document.getElementById("hide_eye");
+            hide_eye.classList.remove("d-none");
+            if (x.type === "password") {
+                x.type = "text";
+                show_eye.style.display = "none";
+                hide_eye.style.display = "block";
+            } else {
+                x.type = "password";
+                show_eye.style.display = "block";
+                hide_eye.style.display = "none";
+            }
+        }
     </script>
 @endsection
