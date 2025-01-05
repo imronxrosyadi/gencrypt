@@ -7,8 +7,6 @@ use App\Helpers\Helper1\Aesctr;
 use App\Models\ReportData;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Crypt;
 
 
 class EncryptionController extends Controller

@@ -6,9 +6,7 @@ use App\Helpers\CommonHelper;
 use App\Models\ReportData;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use App\Helpers\Helper1\Aesctr;
-use Illuminate\Support\Facades\Crypt;
 
 
 
