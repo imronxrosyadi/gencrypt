@@ -6,8 +6,8 @@ use App\Helpers\CommonHelper;
 use App\Models\ReportData;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use App\Helpers\Helper1\Aesctr;
+
 
 
 class DecryptionController extends Controller
@@ -158,21 +158,11 @@ class DecryptionController extends Controller
 
     public function decryptBinary(UploadedFile $file, string $key, string $fileOutputPath): void
     {
-        $chunkSize = 1024 * 64; // 64KB per chunk
-        $binaryContent = fopen($file->getRealPath(), 'rb');
         $file_output = fopen($fileOutputPath, 'wb');
         try {
-            while (!feof($binaryContent)) {
-                $chunk = fread($binaryContent, $chunkSize);
-                if ($chunk === false) {
-                    throw new \RuntimeException('Error reading the file.');
-                }
-
-                $encryptedChunk = Aesctr::decrypt($chunk, $key, 256);
-                fwrite($file_output, $encryptedChunk);
-            }
+            $encryptedChunk = Aesctr::decrypt($file->getContent(), $key, 256);
+            fwrite($file_output, unserialize($encryptedChunk));
         } finally {
-            fclose($binaryContent);
             fclose($file_output);
         }
     }

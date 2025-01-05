@@ -24,7 +24,7 @@ Class Aesctr extends Aes
      * @param nBits     number of bits to be used in the key (128, 192, or 256)
      * @return          encrypted text
      */
-    public static function encrypt($plaintext, $password, $nBits)
+    public static function encrypt(string $plaintext, $password, $nBits)
     {
         $blockSize = 16; // block size fixed at 16 bytes / 128 bits (Nb=4) for AES
         if (!($nBits == 128 || $nBits == 192 || $nBits == 256)) return ''; // standard allows 128/192/256 bit keys
@@ -95,7 +95,7 @@ Class Aesctr extends Aes
      * @param nBits      number of bits to be used in the key (128, 192, or 256)
      * @return           decrypted text
      */
-    public static function decrypt($ciphertext, $password, $nBits)
+    public static function decrypt(string $ciphertext, $password, $nBits)
     {
         $blockSize = 16; // block size fixed at 16 bytes / 128 bits (Nb=4) for AES
         if (!($nBits == 128 || $nBits == 192 || $nBits == 256)) return ''; // standard allows 128/192/256 bit keys
