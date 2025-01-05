@@ -8,6 +8,8 @@ use App\Models\ReportData;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Crypt;
+
 
 class EncryptionController extends Controller
 {
@@ -101,21 +103,12 @@ class EncryptionController extends Controller
     }
     public function encryptBinary(UploadedFile $file, string $key, string $fileOutputPath): void
     {
-        $chunkSize = 1024 * 64; // 64KB per chunk
-        $binaryContent = fopen($file->getRealPath(), 'rb');
         $file_output = fopen($fileOutputPath, 'wb');
         try {
-            while (!feof($binaryContent)) {
-                $chunk = fread($binaryContent, $chunkSize);
-                if ($chunk === false) {
-                    throw new \RuntimeException('Error reading the file.');
-                }
-
-                $encryptedChunk = Aesctr::encrypt($chunk, $key, 256);
-                fwrite($file_output, $encryptedChunk);
-            }
-        } finally {
-            fclose($binaryContent);
+         $encryptedChunk = Aesctr::encrypt(serialize($file->getContent()), $key, 256);
+         fwrite($file_output, $encryptedChunk);
+        } 
+        finally {
             fclose($file_output);
         }
     }
