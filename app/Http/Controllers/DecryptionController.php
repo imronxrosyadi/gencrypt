@@ -109,9 +109,6 @@ class DecryptionController extends Controller
 
     public function download($id)
     {
-        // return response()->streamDownload(function () {
-        //     echo Crypt::decrypt(Storage::get('sempak.pdf'));
-        // }, 'sempak.pdf');
         $report_data = ReportData::where('id', $id)->first();
         $file_output_path = $report_data->path_decrypt;
         if (file_exists($file_output_path)) {
