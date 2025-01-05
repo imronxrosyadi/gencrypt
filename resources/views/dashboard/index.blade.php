@@ -32,7 +32,8 @@
                         </div>
                     </div>
 
-                    <p>Dengan didukung oleh teknologi terkini dan jaringan distribusi yang luas, PT Buana Express menawarkan
+                    <p class="mt-3">Dengan didukung oleh teknologi terkini dan jaringan distribusi yang luas, PT Buana
+                        Express menawarkan
                         berbagai solusi logistik yang mencakup: </p>
                     <ul>
                         <li>Pengiriman dokumen dan paket.</li>
