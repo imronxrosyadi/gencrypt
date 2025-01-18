@@ -28,7 +28,7 @@ class LoginController extends Controller
             return redirect()->intended('/dashboard')->with('active', 'dashboard');
         }
 
-        return back()->with('loginError', 'Invalid credentials!');
+        return back()->with('loginError', 'Email atau kata sandi tidak sesuai!');
     }
 
     public function logout(Request $request)
