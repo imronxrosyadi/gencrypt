@@ -37,10 +37,11 @@
                                 <form action="/login" method="post" class="user">
                                     @csrf
                                     <div class="form-group">
-                                        <input type="email" name="email" class="form-control form-control-user"
-                                            @error('email') is-invalid @enderror" id="email" autofocus required
-                                            value="{{ old('email') }}" aria-describedby="email"
-                                            placeholder="Masukan Alamat Email">
+                                        <input type="email" name="email"
+                                            class="form-control form-control-user
+                                            @error('email') is-invalid @enderror"
+                                            id="email" autofocus required value="{{ old('email') }}"
+                                            aria-describedby="email" placeholder="Masukan Alamat Email">
                                         @error('email')
                                             <div class="invalid-feedback">
                                                 {{ $message }}

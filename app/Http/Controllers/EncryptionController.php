@@ -31,9 +31,7 @@ class EncryptionController extends Controller
         ]);
     }
 
-    public function show()
-    {
-    }
+    public function show() {}
 
     public function create()
     {
@@ -46,8 +44,12 @@ class EncryptionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpg,jpeg,png,pdf|max:10000'
+            'file' => 'required|file|mimes:image/jpeg,jpg,jpeg,image/png,png,pdf,application/pdf|max:3072'
+        ], [
+            'file.max' => 'File tidak boleh lebih besar dari 3 mb.',
+            'file.mimes' => 'Ekstensi file hanya boleh sebagai berikut: jpg, jpeg, png, & pdf.'
         ]);
+
         $key = $request->key;
         $file = $request->file('file');
         $fileName = $file->getClientOriginalName();
@@ -103,10 +105,9 @@ class EncryptionController extends Controller
     {
         $file_output = fopen($fileOutputPath, 'wb');
         try {
-         $encryptedChunk = Aesctr::encrypt(serialize($file->getContent()), $key, 256);
-         fwrite($file_output, $encryptedChunk);
-        } 
-        finally {
+            $encryptedChunk = Aesctr::encrypt(serialize($file->getContent()), $key, 256);
+            fwrite($file_output, $encryptedChunk);
+        } finally {
             fclose($file_output);
         }
     }

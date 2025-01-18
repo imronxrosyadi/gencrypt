@@ -14,8 +14,13 @@
                             <div class="form">
                                 {{-- <div class="input-group"> --}}
                                 <label for="file" class="form-label">Upload File Report</label>
-                                <input class="form-control" type="file" id="file" name="file"
-                                    value="{{ old('file') }}" required>
+                                <input class="form-control @error('file') is-invalid @enderror" type="file"
+                                    id="file" name="file" value="{{ old('file') }}" required>
+                                @error('file')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                                 {{-- </div> --}}
                                 <label for="file" class="form-label mt-3">Kata Sandi</label>
                                 <div class="input-group">

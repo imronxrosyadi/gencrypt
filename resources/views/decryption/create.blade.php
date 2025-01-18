@@ -20,9 +20,13 @@
                             @csrf
                             <div class="form">
                                 <label for="file" class="form-label">Download File Report</label>
-                                <input class="form-control" type="file" id="file" name="file"
-                                    value="{{ old('file') }}" required>
-                                <label for="file" class="form-label mt-3">Kata Sandi</label>
+                                <input class="form-control @error('file') is-invalid @enderror" type="file"
+                                    id="file" name="file" value="{{ old('file') }}" required>
+                                @error('file')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                                 <label for="file" class="form-label mt-3">Kata Sandi</label>
                                 <div class="input-group">
                                     <input class="form-control" type="password" id="key" name="key"

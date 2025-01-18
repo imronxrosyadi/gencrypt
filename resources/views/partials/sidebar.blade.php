@@ -29,12 +29,12 @@
 
     <li class="nav-item {{ Request::is('*encryption*') ? 'active' : '' }}">
         <a class="nav-link" href="/report/encryption">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="bi bi-lock-fill"></i>
             <span>Enkripsi</span></a>
     </li>
     <li class="nav-item {{ Request::is('*decryption*') ? 'active' : '' }}">
         <a class="nav-link" href="/report/decryption">
-            <i class="fas fa-fw fa-wrench"></i>
+            <i class="bi bi-unlock-fill"></i>
             <span>Dekripsi</span></a>
     </li>
 
